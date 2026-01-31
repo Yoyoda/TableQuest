@@ -15,13 +15,13 @@ TableQuest est un jeu éducatif interactif conçu pour aider les enfants à maî
 
 ## 🚀 Démarrage rapide
 
-Visite simplement la page web : [https://olivier.github.io/TableQuest](https://olivier.github.io/TableQuest) *(remplacer par votre URL GitHub Pages)*
+Visite simplement la page web : [https://yoyoda.github.io/TableQuest/](https://yoyoda.github.io/TableQuest/)
 
 ### Développement local
 
 1. Clone le dépôt :
    ```bash
-   git clone https://github.com/olivier/TableQuest.git
+   git clone https://github.com/yoyoda/TableQuest.git
    cd TableQuest
    ```
 
