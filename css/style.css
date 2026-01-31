@@ -622,6 +622,26 @@ select {
     margin-top: var(--espacement-xs);
 }
 
+.badge-carte .badge-description {
+    font-size: 0.75rem;
+    color: var(--texte-secondaire);
+    margin-top: var(--espacement-xs);
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all var(--transition-normale);
+}
+
+.badge-carte:hover .badge-description,
+.badge-carte:active .badge-description {
+    opacity: 1;
+    max-height: 50px;
+}
+
+.badge-carte.obtenu .badge-description {
+    color: var(--texte-principal);
+}
+
 .aucun-badge {
     text-align: center;
     color: var(--texte-secondaire);

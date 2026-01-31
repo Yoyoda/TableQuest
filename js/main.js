@@ -308,10 +308,12 @@ function afficherCollectionBadges() {
     
     const html = badgesPrincipaux.map(badge => {
         const obtenu = badgesPossedes.includes(badge.id);
+        const description = badge.description || 'Badge à débloquer';
         return `
-            <div class="badge-carte ${obtenu ? 'obtenu' : ''}">
+            <div class="badge-carte ${obtenu ? 'obtenu' : ''}" title="${description}">
                 <div class="badge-icone">${badge.icone}</div>
                 <div class="badge-nom">${badge.nom}</div>
+                <div class="badge-description">${description}</div>
             </div>
         `;
     }).join('');
