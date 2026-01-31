@@ -29,6 +29,22 @@ const App = {
 function initialiser() {
     console.log('🎮 Initialisation de TableQuest...');
     
+    // Enregistrer le service worker pour PWA
+    if ('serviceWorker' in navigator) {
+        // Déterminer le bon chemin pour le service worker
+        const swPath = window.location.pathname.includes('/TableQuest/') 
+            ? '/TableQuest/sw.js' 
+            : '/sw.js';
+        
+        navigator.serviceWorker.register(swPath)
+            .then(registration => {
+                console.log('✅ Service Worker enregistré:', registration.scope);
+            })
+            .catch(error => {
+                console.log('❌ Erreur enregistrement Service Worker:', error);
+            });
+    }
+    
     // Charger la progression existante
     const progression = Storage.chargerProgression();
     

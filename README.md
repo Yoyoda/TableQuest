@@ -41,6 +41,35 @@ L'objectif unique est d'offrir un outil éducatif de qualité, sûr et gratuit, 
 - 🎨 **Interface ludique** : Colorée et facile à utiliser pour les enfants
 - 💾 **Sauvegarde locale** : Ta progression est conservée automatiquement
 - 📱 **Responsive** : Fonctionne sur ordinateur, tablette et smartphone
+- 📲 **Application installable (PWA)** : Installe TableQuest comme une vraie app sur ton appareil
+- ✈️ **Mode hors ligne** : Joue même sans connexion internet
+
+## 📲 Installer l'application
+
+TableQuest est une Progressive Web App (PWA) qui peut être installée sur ton appareil comme une vraie application :
+
+### Sur smartphone/tablette Android
+1. Ouvre TableQuest dans Chrome ou Edge
+2. Appuie sur le menu (⋮) en haut à droite
+3. Sélectionne "Installer l'application" ou "Ajouter à l'écran d'accueil"
+4. Confirme l'installation
+
+### Sur iPhone/iPad
+1. Ouvre TableQuest dans Safari
+2. Appuie sur le bouton Partager (□ avec flèche vers le haut)
+3. Sélectionne "Sur l'écran d'accueil"
+4. Confirme l'installation
+
+### Sur ordinateur (Chrome, Edge)
+1. Ouvre TableQuest dans ton navigateur
+2. Regarde l'icône d'installation dans la barre d'adresse (⊕ ou 🖥️)
+3. Clique dessus et confirme l'installation
+
+**Avantages de l'installation :**
+- ✅ Pas de bandeau du navigateur (plus d'espace pour jouer)
+- ✅ Icône sur l'écran d'accueil
+- ✅ Lancement rapide
+- ✅ Fonctionne hors ligne
 
 ## 🛡️ Sécurité et confidentialité
 
