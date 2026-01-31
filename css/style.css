@@ -1,0 +1,609 @@
+/**
+ * TableQuest - Styles principaux
+ * Design ludique et coloré pour enfants
+ */
+
+/* ========== Variables CSS ========== */
+:root {
+    /* Couleurs principales */
+    --couleur-primaire: #6366f1;
+    --couleur-secondaire: #ec4899;
+    --couleur-succes: #10b981;
+    --couleur-erreur: #ef4444;
+    --couleur-avertissement: #f59e0b;
+    
+    /* Couleurs de fond */
+    --fond-clair: #f8fafc;
+    --fond-carte: #ffffff;
+    --fond-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    
+    /* Couleurs de texte */
+    --texte-principal: #1e293b;
+    --texte-secondaire: #64748b;
+    --texte-clair: #ffffff;
+    
+    /* Espacements */
+    --espacement-xs: 0.5rem;
+    --espacement-sm: 1rem;
+    --espacement-md: 1.5rem;
+    --espacement-lg: 2rem;
+    --espacement-xl: 3rem;
+    
+    /* Bordures */
+    --rayon-sm: 0.5rem;
+    --rayon-md: 1rem;
+    --rayon-lg: 1.5rem;
+    --rayon-rond: 50%;
+    
+    /* Ombres */
+    --ombre-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --ombre-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --ombre-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+    
+    /* Transitions */
+    --transition-rapide: 0.15s ease;
+    --transition-normale: 0.3s ease;
+    --transition-lente: 0.5s ease;
+    
+    /* Typographie */
+    --police-principale: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --police-titre: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive;
+}
+
+/* ========== Reset et Base ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--police-principale);
+    background: var(--fond-clair);
+    color: var(--texte-principal);
+    line-height: 1.6;
+    font-size: 16px;
+    min-height: 100vh;
+}
+
+/* ========== Typographie ========== */
+h1, h2, h3 {
+    font-family: var(--police-titre);
+    margin-bottom: var(--espacement-md);
+}
+
+h1 {
+    font-size: 3rem;
+    color: var(--couleur-primaire);
+}
+
+h2 {
+    font-size: 2rem;
+    color: var(--texte-principal);
+}
+
+h3 {
+    font-size: 1.5rem;
+}
+
+/* ========== Conteneurs ========== */
+.ecran {
+    display: none;
+    min-height: 100vh;
+    padding: var(--espacement-md);
+}
+
+.ecran.actif {
+    display: block;
+}
+
+.conteneur {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.conteneur-centre {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100vh;
+    padding: var(--espacement-lg);
+}
+
+/* ========== Cartes ========== */
+.carte-profil,
+.carte-question,
+.carte-resultats {
+    background: var(--fond-carte);
+    border-radius: var(--rayon-lg);
+    padding: var(--espacement-xl);
+    box-shadow: var(--ombre-lg);
+    text-align: center;
+}
+
+/* ========== Écran d'accueil ========== */
+.titre-principal {
+    background: var(--fond-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: var(--espacement-sm);
+}
+
+.sous-titre {
+    font-size: 1.25rem;
+    color: var(--texte-secondaire);
+    margin-bottom: var(--espacement-xl);
+}
+
+.selection-avatar {
+    display: flex;
+    gap: var(--espacement-md);
+    justify-content: center;
+    margin: var(--espacement-lg) 0;
+}
+
+.avatar {
+    font-size: 3rem;
+    padding: var(--espacement-md);
+    background: var(--fond-clair);
+    border: 3px solid transparent;
+    border-radius: var(--rayon-md);
+    cursor: pointer;
+    transition: all var(--transition-normale);
+}
+
+.avatar:hover {
+    transform: scale(1.1);
+    border-color: var(--couleur-primaire);
+}
+
+.avatar.selectionne {
+    background: var(--couleur-primaire);
+    border-color: var(--couleur-primaire);
+    transform: scale(1.15);
+}
+
+/* ========== Formulaires ========== */
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    padding: var(--espacement-md);
+    font-size: 1.125rem;
+    border: 2px solid var(--fond-clair);
+    border-radius: var(--rayon-md);
+    font-family: var(--police-principale);
+    transition: border-color var(--transition-rapide);
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+    outline: none;
+    border-color: var(--couleur-primaire);
+}
+
+input[type="number"] {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+/* ========== Boutons ========== */
+button {
+    font-family: var(--police-principale);
+    cursor: pointer;
+    border: none;
+    transition: all var(--transition-normale);
+}
+
+.btn-principal,
+.btn-secondaire,
+.btn-valider {
+    padding: var(--espacement-md) var(--espacement-xl);
+    font-size: 1.125rem;
+    font-weight: 600;
+    border-radius: var(--rayon-md);
+    box-shadow: var(--ombre-md);
+}
+
+.btn-principal {
+    background: var(--fond-gradient);
+    color: var(--texte-clair);
+}
+
+.btn-principal:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--ombre-lg);
+}
+
+.btn-principal:active {
+    transform: translateY(0);
+}
+
+.btn-secondaire {
+    background: var(--fond-clair);
+    color: var(--texte-principal);
+}
+
+.btn-secondaire:hover {
+    background: #e2e8f0;
+}
+
+.btn-valider {
+    background: var(--couleur-succes);
+    color: var(--texte-clair);
+    margin-left: var(--espacement-sm);
+}
+
+.btn-valider:hover {
+    background: #059669;
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.btn-retour {
+    background: transparent;
+    color: var(--texte-secondaire);
+    font-size: 1rem;
+    padding: var(--espacement-sm);
+}
+
+.btn-retour:hover {
+    color: var(--couleur-primaire);
+}
+
+/* ========== En-tête de jeu ========== */
+.entete-jeu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--espacement-md);
+    background: var(--fond-carte);
+    border-radius: var(--rayon-md);
+    box-shadow: var(--ombre-sm);
+    margin-bottom: var(--espacement-lg);
+}
+
+.info-joueur {
+    display: flex;
+    align-items: center;
+    gap: var(--espacement-sm);
+    font-weight: 600;
+}
+
+.avatar-joueur {
+    font-size: 2rem;
+}
+
+.score-total,
+.score-session {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--couleur-primaire);
+}
+
+/* ========== Grille de tables ========== */
+.grille-tables {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--espacement-md);
+    margin-bottom: var(--espacement-xl);
+}
+
+.carte-table {
+    background: var(--fond-carte);
+    border-radius: var(--rayon-md);
+    padding: var(--espacement-lg);
+    box-shadow: var(--ombre-md);
+    text-align: center;
+    border: 3px solid transparent;
+    transition: all var(--transition-normale);
+}
+
+.carte-table:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--ombre-lg);
+    border-color: var(--couleur-primaire);
+}
+
+.numero-table {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: var(--espacement-sm);
+}
+
+.etoiles-table {
+    font-size: 1.5rem;
+    margin: var(--espacement-sm) 0;
+}
+
+.stats-table {
+    font-size: 0.875rem;
+    color: var(--texte-secondaire);
+}
+
+.taux-reussite {
+    color: var(--couleur-succes);
+    font-weight: 700;
+}
+
+.nouveau {
+    background: var(--fond-gradient);
+    color: var(--texte-clair);
+    padding: var(--espacement-xs) var(--espacement-sm);
+    border-radius: var(--rayon-sm);
+    font-weight: 600;
+}
+
+/* Niveaux de maîtrise */
+.niveau-1 { border-left: 4px solid #94a3b8; }
+.niveau-2 { border-left: 4px solid #3b82f6; }
+.niveau-3 { border-left: 4px solid #8b5cf6; }
+.niveau-4 { border-left: 4px solid #f59e0b; }
+.niveau-5 { border-left: 4px solid #ef4444; }
+
+/* ========== Zone de jeu ========== */
+.zone-jeu {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.question {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--espacement-md);
+    margin-bottom: var(--espacement-xl);
+    font-size: 4rem;
+    font-weight: 700;
+}
+
+.operande {
+    color: var(--couleur-primaire);
+}
+
+.operateur,
+.egal {
+    color: var(--texte-secondaire);
+}
+
+.resultat {
+    color: var(--couleur-secondaire);
+}
+
+.saisie-reponse {
+    display: flex;
+    gap: var(--espacement-sm);
+    margin-bottom: var(--espacement-lg);
+}
+
+/* ========== Feedback ========== */
+.feedback {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all var(--transition-normale);
+    margin: var(--espacement-lg) 0;
+    padding: var(--espacement-md);
+    border-radius: var(--rayon-md);
+}
+
+.feedback.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.feedback.correct {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.feedback.incorrect {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.feedback-message {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: var(--espacement-sm);
+}
+
+.feedback-indice {
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+/* ========== Statistiques ========== */
+.statistiques-session {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--espacement-md);
+    margin-top: var(--espacement-xl);
+}
+
+.stat {
+    background: var(--fond-carte);
+    padding: var(--espacement-md);
+    border-radius: var(--rayon-md);
+    box-shadow: var(--ombre-sm);
+    text-align: center;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.875rem;
+    color: var(--texte-secondaire);
+    margin-bottom: var(--espacement-xs);
+}
+
+.stat-valeur {
+    display: block;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.stat-valeur.correct {
+    color: var(--couleur-succes);
+}
+
+.stat-valeur.incorrect {
+    color: var(--couleur-erreur);
+}
+
+/* ========== Paramètres ========== */
+.parametres {
+    background: var(--fond-carte);
+    padding: var(--espacement-lg);
+    border-radius: var(--rayon-md);
+    box-shadow: var(--ombre-sm);
+}
+
+.toggle,
+.select-difficulte {
+    display: flex;
+    align-items: center;
+    gap: var(--espacement-sm);
+    margin: var(--espacement-sm) 0;
+    cursor: pointer;
+}
+
+select {
+    padding: var(--espacement-sm);
+    font-size: 1rem;
+    border: 2px solid var(--fond-clair);
+    border-radius: var(--rayon-sm);
+    cursor: pointer;
+}
+
+/* ========== Résultats ========== */
+.animation-resultat {
+    font-size: 5rem;
+    margin: var(--espacement-lg) 0;
+}
+
+.resume-score {
+    margin: var(--espacement-xl) 0;
+}
+
+.score-principal {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--couleur-primaire);
+    margin-bottom: var(--espacement-lg);
+}
+
+.stats-finales {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espacement-sm);
+    font-size: 1.125rem;
+}
+
+.emoji {
+    font-size: 1.5rem;
+    margin-right: var(--espacement-sm);
+}
+
+.badges-gagnes {
+    display: flex;
+    justify-content: center;
+    gap: var(--espacement-md);
+    margin: var(--espacement-xl) 0;
+}
+
+.actions-resultats {
+    display: flex;
+    gap: var(--espacement-md);
+    justify-content: center;
+    margin-top: var(--espacement-xl);
+}
+
+/* ========== Animations ========== */
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.anime-pulse {
+    animation: pulse 0.4s ease;
+}
+
+.anime-shake {
+    animation: shake 0.5s ease;
+}
+
+/* ========== Notifications ========== */
+.notification {
+    position: fixed;
+    top: var(--espacement-lg);
+    right: var(--espacement-lg);
+    padding: var(--espacement-md) var(--espacement-lg);
+    background: var(--fond-carte);
+    border-radius: var(--rayon-md);
+    box-shadow: var(--ombre-lg);
+    opacity: 0;
+    transform: translateX(400px);
+    transition: all var(--transition-normale);
+    z-index: 1000;
+}
+
+.notification.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.notification-success {
+    border-left: 4px solid var(--couleur-succes);
+}
+
+.notification-info {
+    border-left: 4px solid var(--couleur-primaire);
+}
+
+.notification-warning {
+    border-left: 4px solid var(--couleur-avertissement);
+}
+
+/* ========== Responsive ========== */
+@media (max-width: 768px) {
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.5rem; }
+    
+    .question { font-size: 3rem; }
+    
+    .grille-tables {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .statistiques-session {
+        grid-template-columns: 1fr;
+    }
+    
+    .actions-resultats {
+        flex-direction: column;
+    }
+    
+    .saisie-reponse {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .question { font-size: 2rem; }
+    
+    .grille-tables {
+        grid-template-columns: 1fr;
+    }
+}

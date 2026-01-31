@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Apprends tes tables de multiplication en t'amusant avec TableQuest !">
+    <title>TableQuest - Apprends tes tables en t'amusant !</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Écran d'accueil -->
+    <div id="ecran-accueil" class="ecran actif">
+        <div class="conteneur-centre">
+            <h1 class="titre-principal">🎮 TableQuest</h1>
+            <p class="sous-titre">Deviens un maître des multiplications !</p>
+            
+            <div class="carte-profil">
+                <h2>Ton profil</h2>
+                <input type="text" id="nom-joueur" placeholder="Entre ton nom..." maxlength="20">
+                <div class="selection-avatar">
+                    <button class="avatar" data-avatar="dragon">🐉</button>
+                    <button class="avatar" data-avatar="licorne">🦄</button>
+                    <button class="avatar" data-avatar="robot">🤖</button>
+                    <button class="avatar" data-avatar="chat">😺</button>
+                </div>
+                <button id="btn-commencer" class="btn-principal">Commencer l'aventure</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Écran de sélection des tables -->
+    <div id="ecran-selection" class="ecran">
+        <div class="conteneur">
+            <header class="entete-jeu">
+                <div class="info-joueur">
+                    <span class="avatar-joueur"></span>
+                    <span class="nom-joueur"></span>
+                </div>
+                <div class="score-total">
+                    <span class="etoiles">⭐ <span id="total-etoiles">0</span></span>
+                </div>
+            </header>
+
+            <h2>Choisis ta table</h2>
+            <div class="grille-tables" id="grille-tables">
+                <!-- Tables générées dynamiquement -->
+            </div>
+
+            <div class="parametres">
+                <h3>Paramètres</h3>
+                <label class="toggle">
+                    <input type="checkbox" id="toggle-son" checked>
+                    <span>🔊 Sons</span>
+                </label>
+                <label class="select-difficulte">
+                    <span>Difficulté :</span>
+                    <select id="select-difficulte">
+                        <option value="adaptatif">Adaptatif</option>
+                        <option value="debutant">Débutant</option>
+                        <option value="intermediaire">Intermédiaire</option>
+                        <option value="avance">Avancé</option>
+                    </select>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Écran de jeu -->
+    <div id="ecran-jeu" class="ecran">
+        <div class="conteneur">
+            <header class="entete-jeu">
+                <button id="btn-retour" class="btn-retour">← Retour</button>
+                <div class="progression-defi">
+                    <span id="questions-reussies">0</span> / <span id="questions-totales">10</span>
+                </div>
+                <div class="score-session">
+                    ⭐ <span id="etoiles-session">0</span>
+                </div>
+            </header>
+
+            <div class="zone-jeu">
+                <div class="carte-question">
+                    <div class="question">
+                        <span id="operande1" class="operande">5</span>
+                        <span class="operateur">×</span>
+                        <span id="operande2" class="operande">7</span>
+                        <span class="egal">=</span>
+                        <span id="resultat" class="resultat">?</span>
+                    </div>
+                    
+                    <div class="saisie-reponse">
+                        <input type="number" id="input-reponse" placeholder="Ta réponse..." autofocus>
+                        <button id="btn-valider" class="btn-valider">Valider</button>
+                    </div>
+                </div>
+
+                <div id="feedback" class="feedback"></div>
+
+                <div class="statistiques-session">
+                    <div class="stat">
+                        <span class="stat-label">Réussites</span>
+                        <span class="stat-valeur correct" id="stat-correct">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Erreurs</span>
+                        <span class="stat-valeur incorrect" id="stat-incorrect">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Précision</span>
+                        <span class="stat-valeur" id="stat-precision">100%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Écran de résultats -->
+    <div id="ecran-resultats" class="ecran">
+        <div class="conteneur-centre">
+            <div class="carte-resultats">
+                <h2 id="titre-resultats">Bravo !</h2>
+                <div class="animation-resultat" id="animation-resultat">🎉</div>
+                
+                <div class="resume-score">
+                    <div class="score-principal">
+                        <span class="label">Score</span>
+                        <span class="valeur" id="score-final">0</span>
+                        <span class="etoiles">⭐</span>
+                    </div>
+                    <div class="stats-finales">
+                        <div><span class="emoji">✅</span> <span id="total-correct">0</span> bonnes réponses</div>
+                        <div><span class="emoji">❌</span> <span id="total-incorrect">0</span> erreurs</div>
+                        <div><span class="emoji">🎯</span> <span id="precision-finale">100</span>% de précision</div>
+                    </div>
+                </div>
+
+                <div id="badges-gagnes" class="badges-gagnes"></div>
+
+                <div class="actions-resultats">
+                    <button id="btn-rejouer" class="btn-principal">Rejouer</button>
+                    <button id="btn-menu" class="btn-secondaire">Menu principal</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Module principal -->
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>

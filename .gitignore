@@ -1,0 +1,27 @@
+# Fichiers système et éditeurs
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+*.sublime-*
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environnements
+.env
+.env.local
+
+# Build (si ajout de build tools plus tard)
+dist/
+build/
+node_modules/
+
+# Temporaires
+tmp/
+temp/
+*.tmp

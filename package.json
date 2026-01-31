@@ -1,0 +1,19 @@
+{
+  "name": "tablequest",
+  "version": "1.0.0",
+  "description": "Site éducatif ludique pour apprendre les tables de multiplication",
+  "type": "module",
+  "scripts": {
+    "dev": "python -m http.server 8000",
+    "serve": "python -m http.server 8000"
+  },
+  "keywords": [
+    "education",
+    "mathematics",
+    "multiplication",
+    "game",
+    "learning"
+  ],
+  "author": "",
+  "license": "MIT"
+}
