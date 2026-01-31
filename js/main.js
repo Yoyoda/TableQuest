@@ -150,6 +150,9 @@ function afficherEcranSelection() {
     if (nomEl) nomEl.textContent = profil.nom;
     if (etoilesEl) etoilesEl.textContent = profil.etoilesTotales;
     
+    // Afficher les badges
+    afficherCollectionBadges();
+    
     // Générer la grille des tables
     const grilleTables = document.getElementById('grille-tables');
     if (grilleTables) {
@@ -177,6 +180,49 @@ function afficherEcranSelection() {
     if (selectDifficulte) {
         selectDifficulte.value = progression.parametres.difficulte;
     }
+}
+
+/**
+ * Affiche la collection de badges du joueur
+ */
+function afficherCollectionBadges() {
+    const collectionEl = document.getElementById('collection-badges');
+    if (!collectionEl) return;
+    
+    const badgesPossedes = Progression.obtenirBadgesPossedes().map(b => b.id);
+    
+    // Liste de tous les badges principaux
+    const badgesPrincipaux = [
+        Progression.BADGES.debutant,
+        Progression.BADGES.parfait,
+        Progression.BADGES.rapide,
+        Progression.BADGES.table_2_master,
+        Progression.BADGES.table_3_master,
+        Progression.BADGES.table_4_master,
+        Progression.BADGES.table_5_master,
+        Progression.BADGES.table_6_master,
+        Progression.BADGES.table_7_master,
+        Progression.BADGES.table_8_master,
+        Progression.BADGES.table_9_master,
+        Progression.BADGES.table_10_master
+    ];
+    
+    if (badgesPossedes.length === 0) {
+        collectionEl.innerHTML = '<p class="aucun-badge">Joue pour gagner des badges ! 🎯</p>';
+        return;
+    }
+    
+    const html = badgesPrincipaux.map(badge => {
+        const obtenu = badgesPossedes.includes(badge.id);
+        return `
+            <div class="badge-carte ${obtenu ? 'obtenu' : ''}">
+                <div class="badge-icone">${badge.icone}</div>
+                <div class="badge-nom">${badge.nom}</div>
+            </div>
+        `;
+    }).join('');
+    
+    collectionEl.innerHTML = html;
 }
 
 /**
@@ -321,19 +367,34 @@ function afficherResultats() {
     // Badges gagnés
     const badgesEl = document.getElementById('badges-gagnes');
     if (badgesEl && resultats.badges.length > 0) {
-        badgesEl.innerHTML = '<h3>Nouveaux badges ! 🏅</h3>' +
-            resultats.badges.map(badgeId => {
-                const badge = Progression.BADGES[badgeId];
-                return badge ? `<div class="badge">${badge.icone} ${badge.nom}</div>` : '';
-            }).join('');
+        const badgesHTML = resultats.badges.map(badgeId => {
+            const badge = Progression.BADGES[badgeId];
+            if (!badge) return '';
+            return `
+                <div class="badge-item nouveau">
+                    <div class="badge-icone">${badge.icone}</div>
+                    <div class="badge-nom">${badge.nom}</div>
+                    ${badge.description ? `<div class="badge-description">${badge.description}</div>` : ''}
+                </div>
+            `;
+        }).join('');
+        
+        badgesEl.innerHTML = `
+            <h3 style="width: 100%; text-align: center; margin-bottom: var(--espacement-md);">
+                🏅 Nouveaux badges gagnés !
+            </h3>
+            ${badgesHTML}
+        `;
         
         // Afficher une notification pour chaque badge
-        resultats.badges.forEach(badgeId => {
+        resultats.badges.forEach((badgeId, index) => {
             const badge = Progression.BADGES[badgeId];
             if (badge) {
-                setTimeout(() => UI.afficherNouveauBadge(badge), 500);
+                setTimeout(() => UI.afficherNouveauBadge(badge), 500 + index * 300);
             }
         });
+    } else if (badgesEl) {
+        badgesEl.innerHTML = '';
     }
 }
 

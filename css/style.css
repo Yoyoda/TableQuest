@@ -512,9 +512,108 @@ select {
 
 .badges-gagnes {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     gap: var(--espacement-md);
     margin: var(--espacement-xl) 0;
+}
+
+.badge-item {
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    border: 3px solid #f59e0b;
+    border-radius: var(--rayon-lg);
+    padding: var(--espacement-lg);
+    text-align: center;
+    min-width: 120px;
+    box-shadow: var(--ombre-lg);
+    animation: badgeAppear 0.5s ease;
+}
+
+.badge-item.nouveau {
+    animation: badgePulse 1s ease infinite;
+}
+
+.badge-icone {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: var(--espacement-sm);
+}
+
+.badge-nom {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--texte-principal);
+    margin-bottom: var(--espacement-xs);
+}
+
+.badge-description {
+    font-size: 0.875rem;
+    color: var(--texte-secondaire);
+}
+
+/* ========== Section Mes Badges ========== */
+.section-badges {
+    background: var(--fond-carte);
+    padding: var(--espacement-lg);
+    border-radius: var(--rayon-md);
+    box-shadow: var(--ombre-sm);
+    margin-bottom: var(--espacement-xl);
+}
+
+.section-badges h3 {
+    margin-bottom: var(--espacement-md);
+    color: var(--couleur-primaire);
+}
+
+.collection-badges {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: var(--espacement-md);
+}
+
+.badge-carte {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border: 3px solid #cbd5e1;
+    border-radius: var(--rayon-md);
+    padding: var(--espacement-md);
+    text-align: center;
+    transition: all var(--transition-normale);
+    cursor: default;
+}
+
+.badge-carte.obtenu {
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    border-color: #f59e0b;
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+}
+
+.badge-carte.obtenu:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 10px 30px rgba(245, 158, 11, 0.4);
+}
+
+.badge-carte .badge-icone {
+    font-size: 2.5rem;
+    filter: grayscale(1);
+    opacity: 0.3;
+}
+
+.badge-carte.obtenu .badge-icone {
+    filter: grayscale(0);
+    opacity: 1;
+}
+
+.badge-carte .badge-nom {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-top: var(--espacement-xs);
+}
+
+.aucun-badge {
+    text-align: center;
+    color: var(--texte-secondaire);
+    padding: var(--espacement-xl);
+    font-style: italic;
 }
 
 .actions-resultats {
@@ -534,6 +633,28 @@ select {
     0%, 100% { transform: translateX(0); }
     25% { transform: translateX(-10px); }
     75% { transform: translateX(10px); }
+}
+
+@keyframes badgeAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0.5) rotate(-10deg);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+@keyframes badgePulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 15px 35px rgba(245, 158, 11, 0.5);
+    }
 }
 
 .anime-pulse {
@@ -587,6 +708,10 @@ select {
         grid-template-columns: repeat(2, 1fr);
     }
     
+    .collection-badges {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
     .statistiques-session {
         grid-template-columns: 1fr;
     }
@@ -604,6 +729,10 @@ select {
     .question { font-size: 2rem; }
     
     .grille-tables {
+        grid-template-columns: 1fr;
+    }
+    
+    .collection-badges {
         grid-template-columns: 1fr;
     }
 }
