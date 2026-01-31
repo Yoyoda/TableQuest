@@ -2,7 +2,7 @@
   "name": "TableQuest - Apprends tes tables de multiplication",
   "short_name": "TableQuest",
   "description": "Apprends tes tables de multiplication en t'amusant avec TableQuest !",
-  "start_url": "/TableQuest/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#4A90E2",
   "theme_color": "#4A90E2",
@@ -24,5 +24,5 @@
   "categories": ["education", "games"],
   "lang": "fr",
   "dir": "ltr",
-  "scope": "/TableQuest/"
+  "scope": "./"
 }

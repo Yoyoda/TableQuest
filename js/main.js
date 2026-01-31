@@ -31,7 +31,12 @@ function initialiser() {
     
     // Enregistrer le service worker pour PWA
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/TableQuest/sw.js')
+        // Déterminer le bon chemin pour le service worker
+        const swPath = window.location.pathname.includes('/TableQuest/') 
+            ? '/TableQuest/sw.js' 
+            : '/sw.js';
+        
+        navigator.serviceWorker.register(swPath)
             .then(registration => {
                 console.log('✅ Service Worker enregistré:', registration.scope);
             })

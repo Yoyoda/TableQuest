@@ -1,16 +1,20 @@
 // Service Worker pour TableQuest
 const CACHE_NAME = 'tablequest-v1';
+
+// Déterminer le chemin de base (local ou GitHub Pages)
+const BASE_PATH = self.location.pathname.includes('/TableQuest/') ? '/TableQuest' : '';
+
 const urlsToCache = [
-  '/TableQuest/',
-  '/TableQuest/index.html',
-  '/TableQuest/parents.html',
-  '/TableQuest/css/style.css',
-  '/TableQuest/js/main.js',
-  '/TableQuest/js/game.js',
-  '/TableQuest/js/difficulty.js',
-  '/TableQuest/js/progression.js',
-  '/TableQuest/js/storage.js',
-  '/TableQuest/js/ui.js'
+  `${BASE_PATH}/`,
+  `${BASE_PATH}/index.html`,
+  `${BASE_PATH}/parents.html`,
+  `${BASE_PATH}/css/style.css`,
+  `${BASE_PATH}/js/main.js`,
+  `${BASE_PATH}/js/game.js`,
+  `${BASE_PATH}/js/difficulty.js`,
+  `${BASE_PATH}/js/progression.js`,
+  `${BASE_PATH}/js/storage.js`,
+  `${BASE_PATH}/js/ui.js`
 ];
 
 // Installation du service worker
@@ -65,7 +69,7 @@ self.addEventListener('fetch', (event) => {
           }
           // Si pas de cache disponible, retourner une page d'erreur basique
           if (event.request.mode === 'navigate') {
-            return caches.match('/TableQuest/index.html');
+            return caches.match(`${BASE_PATH}/index.html`);
           }
         });
       })
