@@ -72,14 +72,31 @@ export function obtenirNiveauTable(table) {
  * @param {number} table - Numéro de la table
  * @param {number} reussites - Nombre de réussites
  * @param {number} tentatives - Nombre total de tentatives
+ * @param {number} tempsMoyen - Temps moyen de réponse en secondes
  */
-export function mettreAJourStatsTable(table, reussites, tentatives) {
+export function mettreAJourStatsTable(table, reussites, tentatives, tempsMoyen = 0) {
     const stats = Storage.obtenirStatistiquesTable(table);
+    
+    // Mettre à jour l'historique des temps (garder les 10 dernières sessions)
+    const historiqueTemps = stats.historiqueTemps || [];
+    if (tempsMoyen > 0) {
+        historiqueTemps.push(tempsMoyen);
+        if (historiqueTemps.length > 10) {
+            historiqueTemps.shift();
+        }
+    }
+    
+    // Calculer le nouveau temps moyen global
+    const nouveauTempsMoyen = historiqueTemps.length > 0
+        ? historiqueTemps.reduce((a, b) => a + b, 0) / historiqueTemps.length
+        : 0;
     
     const nouvellesStats = {
         reussites: stats.reussites + reussites,
         tentatives: stats.tentatives + tentatives,
-        niveau: 0 // Sera recalculé
+        niveau: 0, // Sera recalculé
+        tempsMoyen: Math.round(nouveauTempsMoyen * 10) / 10,
+        historiqueTemps
     };
     
     Storage.mettreAJourStatistiquesTable(table, nouvellesStats);
@@ -199,9 +216,12 @@ export function genererDonneesGrilleTables() {
             niveau,
             tentatives: stats.tentatives,
             tauxReussite,
+            tempsMoyen: stats.tempsMoyen || 0,
+            historiqueTemps: stats.historiqueTemps || [],
             estDebloque: true, // Toutes les tables sont débloquées
             estMaitrisee: niveau >= 4,
-            labelNiveau: obtenirLabelNiveau(niveau)
+            labelNiveau: obtenirLabelNiveau(niveau),
+            iconeVitesse: obtenirIconeVitesse(stats.tempsMoyen)
         });
     }
     
@@ -222,4 +242,17 @@ function obtenirLabelNiveau(niveau) {
         5: 'Maître'
     };
     return labels[niveau] || 'Débutant';
+}
+
+/**
+ * Obtient l'icône de vitesse selon le temps moyen
+ * @param {number} tempsMoyen - Temps moyen en secondes
+ * @returns {string} Icône représentant la vitesse
+ */
+function obtenirIconeVitesse(tempsMoyen) {
+    if (tempsMoyen === 0) return ''; // Pas encore de donnée
+    if (tempsMoyen < 3) return '⚡'; // Très rapide
+    if (tempsMoyen < 5) return '🐇'; // Rapide
+    if (tempsMoyen < 8) return '🐢'; // Moyen
+    return '🐌'; // Lent (mais pas de pression!)
 }

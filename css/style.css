@@ -326,6 +326,19 @@ button:disabled {
 .stats-table {
     font-size: 0.875rem;
     color: var(--texte-secondaire);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.temps-moyen {
+    display: inline-block;
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+    color: var(--texte-secondaire);
+    background: var(--fond-clair);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--rayon-sm);
 }
 
 .taux-reussite {

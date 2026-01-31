@@ -273,6 +273,16 @@ export function genererCarteTable(donneesTable) {
     const etoiles = '⭐'.repeat(donneesTable.niveau);
     const classeNiveau = `niveau-${donneesTable.niveau}`;
     
+    // Afficher le temps moyen si disponible
+    let infoTemps = '';
+    if (donneesTable.tempsMoyen > 0) {
+        infoTemps = `
+            <span class="temps-moyen">
+                ${donneesTable.iconeVitesse} ${donneesTable.tempsMoyen}s
+            </span>
+        `;
+    }
+    
     return `
         <button class="carte-table ${classeNiveau}" data-table="${donneesTable.numero}">
             <div class="numero-table">Table de ${donneesTable.numero}</div>
@@ -281,6 +291,7 @@ export function genererCarteTable(donneesTable) {
                 ${donneesTable.tentatives > 0 ? `
                     <span class="taux-reussite">${donneesTable.tauxReussite}%</span>
                     <span class="label-niveau">${donneesTable.labelNiveau}</span>
+                    ${infoTemps}
                 ` : '<span class="nouveau">Nouveau</span>'}
             </div>
         </button>

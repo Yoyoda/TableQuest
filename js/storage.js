@@ -81,7 +81,9 @@ export function obtenirStatistiquesTable(table) {
             reussites: 0,
             tentatives: 0,
             niveau: 1,
-            derniereSession: null
+            derniereSession: null,
+            tempsMoyen: 0,
+            historiqueTemps: []
         };
     }
     
