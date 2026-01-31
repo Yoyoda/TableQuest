@@ -11,6 +11,7 @@ import * as Progression from './progression.js';
  */
 let sessionEnCours = {
     table: null,
+    nombresChoisis: null, // Nouveau: pour le mode nombres personnalisés
     niveau: 'debutant',
     questionActuelle: null,
     questionsRepondues: 0,
@@ -24,13 +25,15 @@ let sessionEnCours = {
 
 /**
  * Démarre une nouvelle session de jeu
- * @param {number} table - Numéro de la table à jouer
+ * @param {number|null} table - Numéro de la table à jouer (null pour mode nombres)
  * @param {string} niveau - Niveau de difficulté
  * @param {number} objectif - Nombre de questions à répondre
+ * @param {Array|null} nombresChoisis - Tableau des nombres choisis pour le mode nombres
  */
-export function demarrerSession(table, niveau = 'debutant', objectif = 10) {
+export function demarrerSession(table, niveau = 'debutant', objectif = 10, nombresChoisis = null) {
     sessionEnCours = {
         table,
+        nombresChoisis,
         niveau,
         questionActuelle: null,
         questionsRepondues: 0,
@@ -62,7 +65,8 @@ export function obtenirSession() {
 export function nouvelleQuestion() {
     const question = Difficulte.genererQuestion(
         sessionEnCours.table,
-        sessionEnCours.niveau
+        sessionEnCours.niveau,
+        sessionEnCours.nombresChoisis
     );
     
     sessionEnCours.questionActuelle = question;
@@ -227,6 +231,7 @@ export function terminerSession() {
     
     const resultats = {
         table: sessionEnCours.table,
+        nombresChoisis: sessionEnCours.nombresChoisis,
         questionsRepondues: sessionEnCours.questionsRepondues,
         questionsCorrectes: sessionEnCours.questionsCorrectes,
         etoilesGagnees: sessionEnCours.etoilesSession,
@@ -237,7 +242,7 @@ export function terminerSession() {
         badges: evaluerBadges()
     };
     
-    // Sauvegarder les résultats
+    // Sauvegarder les résultats seulement si c'est une table spécifique
     if (sessionEnCours.table) {
         Progression.mettreAJourStatsTable(
             sessionEnCours.table,

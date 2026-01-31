@@ -14,6 +14,8 @@ import * as UI from './ui.js';
 const App = {
     avatarSelectionne: 'dragon',
     tableEnCours: null,
+    nombresChoisis: [], // Pour le mode nombres personnalisés
+    modeActuel: 'tables', // 'tables' ou 'nombres'
     statsSession: {
         correct: 0,
         incorrect: 0
@@ -83,6 +85,79 @@ function initialiserEcouteurs() {
     
     // === Écran de sélection ===
     
+    // Basculer entre mode tables et mode nombres
+    const btnModeTables = document.getElementById('btn-mode-tables');
+    const btnModeNombres = document.getElementById('btn-mode-nombres');
+    const modeTables = document.getElementById('mode-tables');
+    const modeNombres = document.getElementById('mode-nombres');
+    
+    btnModeTables?.addEventListener('click', () => {
+        App.modeActuel = 'tables';
+        btnModeTables.classList.add('actif');
+        btnModeNombres.classList.remove('actif');
+        modeTables.classList.add('actif');
+        modeNombres.classList.remove('actif');
+        UI.jouerSon('click');
+    });
+    
+    btnModeNombres?.addEventListener('click', () => {
+        App.modeActuel = 'nombres';
+        btnModeNombres.classList.add('actif');
+        btnModeTables.classList.remove('actif');
+        modeNombres.classList.add('actif');
+        modeTables.classList.remove('actif');
+        UI.jouerSon('click');
+    });
+    
+    // Sélection de nombres
+    document.querySelectorAll('.nombre-choix').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const nombre = parseInt(e.target.dataset.nombre);
+            const index = App.nombresChoisis.indexOf(nombre);
+            
+            if (index === -1) {
+                App.nombresChoisis.push(nombre);
+                e.target.classList.add('selectionne');
+            } else {
+                App.nombresChoisis.splice(index, 1);
+                e.target.classList.remove('selectionne');
+            }
+            
+            mettreAJourBoutonLancerNombres();
+            UI.jouerSon('click');
+        });
+    });
+    
+    // Tout sélectionner
+    const btnSelectionnerTout = document.getElementById('btn-selectionner-tout');
+    btnSelectionnerTout?.addEventListener('click', () => {
+        App.nombresChoisis = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        document.querySelectorAll('.nombre-choix').forEach(btn => {
+            btn.classList.add('selectionne');
+        });
+        mettreAJourBoutonLancerNombres();
+        UI.jouerSon('click');
+    });
+    
+    // Tout désélectionner
+    const btnDeselectionnerTout = document.getElementById('btn-deselectionner-tout');
+    btnDeselectionnerTout?.addEventListener('click', () => {
+        App.nombresChoisis = [];
+        document.querySelectorAll('.nombre-choix').forEach(btn => {
+            btn.classList.remove('selectionne');
+        });
+        mettreAJourBoutonLancerNombres();
+        UI.jouerSon('click');
+    });
+    
+    // Lancer le jeu avec nombres personnalisés
+    const btnLancerNombres = document.getElementById('btn-lancer-nombres');
+    btnLancerNombres?.addEventListener('click', () => {
+        if (App.nombresChoisis.length >= 2) {
+            demarrerJeuNombres(App.nombresChoisis);
+        }
+    });
+    
     // Paramètres
     const toggleSon = document.getElementById('toggle-son');
     toggleSon?.addEventListener('change', (e) => {
@@ -123,6 +198,8 @@ function initialiserEcouteurs() {
     btnRejouer?.addEventListener('click', () => {
         if (App.tableEnCours) {
             demarrerJeu(App.tableEnCours);
+        } else if (App.nombresChoisis && App.nombresChoisis.length >= 2) {
+            demarrerJeuNombres(App.nombresChoisis);
         }
     });
     
@@ -180,6 +257,22 @@ function afficherEcranSelection() {
     }
     if (selectDifficulte) {
         selectDifficulte.value = progression.parametres.difficulte;
+    }
+}
+
+/**
+ * Met à jour l'état du bouton de lancement pour le mode nombres
+ */
+function mettreAJourBoutonLancerNombres() {
+    const btnLancerNombres = document.getElementById('btn-lancer-nombres');
+    if (!btnLancerNombres) return;
+    
+    if (App.nombresChoisis.length >= 2) {
+        btnLancerNombres.disabled = false;
+        btnLancerNombres.textContent = `Commencer (${App.nombresChoisis.length} nombres)`;
+    } else {
+        btnLancerNombres.disabled = true;
+        btnLancerNombres.textContent = 'Commencer (min. 2 nombres)';
     }
 }
 
@@ -243,7 +336,35 @@ function demarrerJeu(table) {
     const niveau = progression.parametres.difficulte;
     
     // Démarrer la session de jeu
-    Game.demarrerSession(table, niveau, 10);
+    Game.demarrerSession(table, niveau, 10, null);
+    
+    // Réinitialiser l'affichage
+    UI.mettreAJourProgression(0, 10);
+    UI.mettreAJourEtoiles(0);
+    UI.mettreAJourStatistiques(App.statsSession);
+    
+    // Afficher la première question
+    afficherNouvelleQuestion();
+}
+
+/**
+ * Démarre une partie avec des nombres personnalisés
+ * @param {Array} nombres - Tableau des nombres choisis
+ */
+function demarrerJeuNombres(nombres) {
+    UI.jouerSon('click');
+    UI.afficherEcran('ecran-jeu');
+    
+    App.tableEnCours = null;
+    App.statsSession = { correct: 0, incorrect: 0 };
+    App.enCoursDeValidation = false;
+    
+    // Obtenir le niveau de difficulté
+    const progression = Storage.chargerProgression();
+    const niveau = progression.parametres.difficulte;
+    
+    // Démarrer la session de jeu avec les nombres choisis
+    Game.demarrerSession(null, niveau, 10, nombres);
     
     // Réinitialiser l'affichage
     UI.mettreAJourProgression(0, 10);
