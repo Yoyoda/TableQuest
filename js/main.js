@@ -204,8 +204,7 @@ function afficherCollectionBadges() {
         Progression.BADGES.table_6_master,
         Progression.BADGES.table_7_master,
         Progression.BADGES.table_8_master,
-        Progression.BADGES.table_9_master,
-        Progression.BADGES.table_10_master
+        Progression.BADGES.table_9_master
     ];
     
     if (badgesPossedes.length === 0) {

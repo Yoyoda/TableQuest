@@ -34,8 +34,7 @@ export const BADGES = {
     table_6_master: { id: 'table_6_master', nom: 'Maître du 6', icone: '🥇' },
     table_7_master: { id: 'table_7_master', nom: 'Maître du 7', icone: '🥇' },
     table_8_master: { id: 'table_8_master', nom: 'Maître du 8', icone: '🥇' },
-    table_9_master: { id: 'table_9_master', nom: 'Maître du 9', icone: '🥇' },
-    table_10_master: { id: 'table_10_master', nom: 'Maître du 10', icone: '🥇' }
+    table_9_master: { id: 'table_9_master', nom: 'Maître du 9', icone: '🥇' }
 };
 
 /**
@@ -120,7 +119,7 @@ export function obtenirStatistiquesGlobales() {
     let totalTentatives = 0;
     let tablesMaitrisees = 0;
     
-    for (let i = 1; i <= 10; i++) {
+    for (let i = 2; i <= 9; i++) {
         const stats = toutesStats[`table_${i}`];
         if (stats) {
             totalReussites += stats.reussites;
@@ -187,7 +186,7 @@ export function obtenirBadgesPossedes() {
 export function genererDonneesGrilleTables() {
     const tables = [];
     
-    for (let i = 1; i <= 10; i++) {
+    for (let i = 2; i <= 9; i++) {
         const stats = Storage.obtenirStatistiquesTable(i);
         const niveau = obtenirNiveauTable(i);
         const tauxReussite = stats.tentatives > 0

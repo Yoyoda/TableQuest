@@ -17,9 +17,9 @@ export const NIVEAUX = {
  * Configuration des tables par niveau
  */
 const TABLES_PAR_NIVEAU = {
-    [NIVEAUX.DEBUTANT]: [1, 2, 5, 10],
+    [NIVEAUX.DEBUTANT]: [2, 5],
     [NIVEAUX.INTERMEDIAIRE]: [3, 4, 6, 7, 8, 9],
-    [NIVEAUX.AVANCE]: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    [NIVEAUX.AVANCE]: [2, 3, 4, 5, 6, 7, 8, 9]
 };
 
 /**
@@ -65,12 +65,12 @@ export function genererQuestion(table = null, niveau = NIVEAUX.DEBUTANT) {
     if (table !== null) {
         // Mode table spécifique
         operande1 = table;
-        operande2 = nombreAleatoire(1, 10);
+        operande2 = nombreAleatoire(2, 9);
     } else {
         // Mode aléatoire selon le niveau
         const tablesDisponibles = obtenirTablesDisponibles(niveau);
         operande1 = tablesDisponibles[nombreAleatoire(0, tablesDisponibles.length - 1)];
-        operande2 = nombreAleatoire(1, 10);
+        operande2 = nombreAleatoire(2, 9);
     }
     
     // Parfois inverser l'ordre pour varier
