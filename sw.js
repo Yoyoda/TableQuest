@@ -26,7 +26,8 @@ self.addEventListener('install', (event) => {
         return cache.addAll(urlsToCache);
       })
       .catch((err) => {
-        console.log('Erreur lors de la mise en cache:', err);
+        console.error('Erreur lors de la mise en cache:', err);
+        throw err;
       })
   );
 });
@@ -53,7 +54,7 @@ self.addEventListener('fetch', (event) => {
     fetch(event.request)
       .then((response) => {
         // Si la requête réussit, on met à jour le cache
-        if (response && response.status === 200) {
+        if (response && response.ok) {
           const responseToCache = response.clone();
           caches.open(CACHE_NAME).then((cache) => {
             cache.put(event.request, responseToCache);
