@@ -869,3 +869,130 @@ select {
     color: var(--couleur-secondaire);
     text-decoration: underline;
 }
+
+/* ========== Mode Selection (Tables vs Nombres) ========== */
+.mode-selection {
+    display: flex;
+    gap: var(--espacement-sm);
+    margin-bottom: var(--espacement-lg);
+    background: var(--fond-carte);
+    padding: var(--espacement-xs);
+    border-radius: var(--rayon-md);
+    box-shadow: var(--ombre-sm);
+}
+
+.btn-mode {
+    flex: 1;
+    padding: var(--espacement-md);
+    background: transparent;
+    border: none;
+    border-radius: var(--rayon-sm);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--texte-secondaire);
+    cursor: pointer;
+    transition: all var(--transition-normale);
+}
+
+.btn-mode:hover {
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--couleur-primaire);
+}
+
+.btn-mode.actif {
+    background: var(--couleur-primaire);
+    color: var(--texte-clair);
+    box-shadow: var(--ombre-md);
+}
+
+.mode-contenu {
+    display: none;
+}
+
+.mode-contenu.actif {
+    display: block;
+}
+
+.description-mode {
+    color: var(--texte-secondaire);
+    margin-bottom: var(--espacement-lg);
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+/* ========== Grille de sélection des nombres ========== */
+.grille-nombres {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--espacement-md);
+    margin-bottom: var(--espacement-lg);
+}
+
+@media (max-width: 768px) {
+    .grille-nombres {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .grille-nombres {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.nombre-choix {
+    aspect-ratio: 1;
+    background: var(--fond-carte);
+    border: 3px solid #e2e8f0;
+    border-radius: var(--rayon-md);
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--texte-principal);
+    cursor: pointer;
+    transition: all var(--transition-normale);
+    box-shadow: var(--ombre-sm);
+}
+
+.nombre-choix:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--ombre-md);
+    border-color: var(--couleur-primaire);
+}
+
+.nombre-choix.selectionne {
+    background: var(--couleur-primaire);
+    color: var(--texte-clair);
+    border-color: var(--couleur-primaire);
+    transform: scale(1.05);
+}
+
+.nombre-choix:active {
+    transform: scale(0.95);
+}
+
+/* ========== Actions pour mode nombres ========== */
+.actions-nombres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--espacement-sm);
+    justify-content: center;
+    margin-top: var(--espacement-lg);
+}
+
+.actions-nombres .btn-principal,
+.actions-nombres .btn-secondaire {
+    flex: 1;
+    min-width: 200px;
+}
+
+.actions-nombres .btn-principal:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+    .actions-nombres .btn-principal,
+    .actions-nombres .btn-secondaire {
+        min-width: 100%;
+    }
+}

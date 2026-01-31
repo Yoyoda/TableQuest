@@ -41,9 +41,41 @@
                 </div>
             </header>
 
-            <h2>Choisis ta table</h2>
-            <div class="grille-tables" id="grille-tables">
-                <!-- Tables générées dynamiquement -->
+            <!-- Toggle entre mode table et mode nombres -->
+            <div class="mode-selection">
+                <button id="btn-mode-tables" class="btn-mode actif">Tables de multiplication</button>
+                <button id="btn-mode-nombres" class="btn-mode">Nombres personnalisés</button>
+            </div>
+
+            <!-- Mode Tables -->
+            <div id="mode-tables" class="mode-contenu actif">
+                <h2>Choisis ta table</h2>
+                <div class="grille-tables" id="grille-tables">
+                    <!-- Tables générées dynamiquement -->
+                </div>
+            </div>
+
+            <!-- Mode Nombres -->
+            <div id="mode-nombres" class="mode-contenu">
+                <h2>Choisis les nombres à travailler</h2>
+                <p class="description-mode">Sélectionne les nombres que tu veux utiliser dans tes multiplications</p>
+                <div class="grille-nombres" id="grille-nombres">
+                    <button class="nombre-choix" data-nombre="1">1</button>
+                    <button class="nombre-choix" data-nombre="2">2</button>
+                    <button class="nombre-choix" data-nombre="3">3</button>
+                    <button class="nombre-choix" data-nombre="4">4</button>
+                    <button class="nombre-choix" data-nombre="5">5</button>
+                    <button class="nombre-choix" data-nombre="6">6</button>
+                    <button class="nombre-choix" data-nombre="7">7</button>
+                    <button class="nombre-choix" data-nombre="8">8</button>
+                    <button class="nombre-choix" data-nombre="9">9</button>
+                    <button class="nombre-choix" data-nombre="10">10</button>
+                </div>
+                <div class="actions-nombres">
+                    <button id="btn-selectionner-tout" class="btn-secondaire">Tout sélectionner</button>
+                    <button id="btn-deselectionner-tout" class="btn-secondaire">Tout désélectionner</button>
+                    <button id="btn-lancer-nombres" class="btn-principal" disabled>Commencer (min. 2 nombres)</button>
+                </div>
             </div>
 
             <!-- Section Mes Badges -->

@@ -57,12 +57,27 @@ export function obtenirTablesDisponibles(niveau) {
  * Génère une question selon le niveau de difficulté
  * @param {number} table - Numéro de la table (optionnel pour mode aléatoire)
  * @param {string} niveau - Niveau de difficulté
+ * @param {Array} nombresChoisis - Tableau des nombres choisis (mode nombres personnalisés)
  * @returns {Object} Question avec operande1, operande2 et resultat
  */
-export function genererQuestion(table = null, niveau = NIVEAUX.DEBUTANT) {
+export function genererQuestion(table = null, niveau = NIVEAUX.DEBUTANT, nombresChoisis = null) {
     let operande1, operande2;
     
-    if (table !== null) {
+    if (nombresChoisis && nombresChoisis.length >= 2) {
+        // Mode nombres personnalisés : choisir 2 nombres parmi ceux sélectionnés
+        const index1 = nombreAleatoire(0, nombresChoisis.length - 1);
+        let index2 = nombreAleatoire(0, nombresChoisis.length - 1);
+        
+        // S'assurer que les deux indices sont différents quand il y a plus de 2 nombres
+        if (nombresChoisis.length > 2) {
+            while (index2 === index1) {
+                index2 = nombreAleatoire(0, nombresChoisis.length - 1);
+            }
+        }
+        
+        operande1 = nombresChoisis[index1];
+        operande2 = nombresChoisis[index2];
+    } else if (table !== null) {
         // Mode table spécifique
         operande1 = table;
         operande2 = nombreAleatoire(1, 10);
