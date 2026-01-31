@@ -17,7 +17,8 @@ const App = {
     statsSession: {
         correct: 0,
         incorrect: 0
-    }
+    },
+    enCoursDeValidation: false
 };
 
 /**
@@ -235,6 +236,7 @@ function demarrerJeu(table) {
     
     App.tableEnCours = table;
     App.statsSession = { correct: 0, incorrect: 0 };
+    App.enCoursDeValidation = false;
     
     // Obtenir le niveau de difficulté
     const progression = Storage.chargerProgression();
@@ -261,10 +263,15 @@ function afficherNouvelleQuestion() {
     const op1El = document.getElementById('operande1');
     const op2El = document.getElementById('operande2');
     const resultatEl = document.getElementById('resultat');
+    const inputReponse = document.getElementById('input-reponse');
     
     if (op1El) op1El.textContent = question.operande1;
     if (op2El) op2El.textContent = question.operande2;
     if (resultatEl) resultatEl.textContent = '?';
+    
+    // Réactiver l'input et le flag
+    if (inputReponse) inputReponse.disabled = false;
+    App.enCoursDeValidation = false;
     
     UI.viderEtFocusInput('input-reponse');
     
@@ -277,6 +284,11 @@ function afficherNouvelleQuestion() {
  * Valide la réponse du joueur
  */
 function validerReponse() {
+    // Empêcher les validations multiples
+    if (App.enCoursDeValidation) {
+        return;
+    }
+    
     const inputReponse = document.getElementById('input-reponse');
     const reponse = parseInt(inputReponse.value);
     
@@ -284,6 +296,10 @@ function validerReponse() {
         UI.animer(inputReponse, 'shake');
         return;
     }
+    
+    // Verrouiller la validation et désactiver l'input
+    App.enCoursDeValidation = true;
+    if (inputReponse) inputReponse.disabled = true;
     
     // Vérifier la réponse
     const resultat = Game.verifierReponse(reponse);
