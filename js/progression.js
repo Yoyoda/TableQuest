@@ -249,7 +249,7 @@ function obtenirLabelNiveau(niveau) {
  * @param {number} tempsMoyen - Temps moyen en secondes
  * @returns {string} Icône représentant la vitesse
  */
-function obtenirIconeVitesse(tempsMoyen) {
+export function obtenirIconeVitesse(tempsMoyen) {
     if (tempsMoyen === 0) return ''; // Pas encore de donnée
     if (tempsMoyen < 3) return '⚡'; // Très rapide
     if (tempsMoyen < 5) return '🐇'; // Rapide

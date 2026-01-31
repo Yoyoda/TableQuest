@@ -383,9 +383,7 @@ function afficherResultats() {
     // Ajouter l'affichage du temps moyen si disponible
     const statsFinalesEl = document.querySelector('.stats-finales');
     if (statsFinalesEl && resultats.tempsMoyen > 0) {
-        const iconeVitesse = resultats.tempsMoyen < 3 ? '⚡' : 
-                            resultats.tempsMoyen < 5 ? '🐇' :
-                            resultats.tempsMoyen < 8 ? '🐢' : '🐌';
+        const iconeVitesse = Progression.obtenirIconeVitesse(resultats.tempsMoyen);
         const tempsDiv = document.createElement('div');
         tempsDiv.innerHTML = `<span class="emoji">${iconeVitesse}</span> ${resultats.tempsMoyen}s par réponse`;
         statsFinalesEl.appendChild(tempsDiv);
