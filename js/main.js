@@ -380,6 +380,15 @@ function afficherResultats() {
     if (totalIncorrectEl) totalIncorrectEl.textContent = resultats.questionsRepondues - resultats.questionsCorrectes;
     if (precisionFinaleEl) precisionFinaleEl.textContent = resultats.tauxReussite;
     
+    // Ajouter l'affichage du temps moyen si disponible
+    const statsFinalesEl = document.querySelector('.stats-finales');
+    if (statsFinalesEl && resultats.tempsMoyen > 0) {
+        const iconeVitesse = Progression.obtenirIconeVitesse(resultats.tempsMoyen);
+        const tempsDiv = document.createElement('div');
+        tempsDiv.innerHTML = `<span class="emoji">${iconeVitesse}</span> ${resultats.tempsMoyen}s par réponse`;
+        statsFinalesEl.appendChild(tempsDiv);
+    }
+    
     // Badges gagnés
     const badgesEl = document.getElementById('badges-gagnes');
     if (badgesEl && resultats.badges.length > 0) {

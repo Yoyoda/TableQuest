@@ -17,7 +17,9 @@ let sessionEnCours = {
     questionsCorrectes: 0,
     objectifQuestions: 10,
     etoilesSession: 0,
-    debutSession: null
+    debutSession: null,
+    debutQuestion: null,
+    tempsReponses: []
 };
 
 /**
@@ -35,7 +37,9 @@ export function demarrerSession(table, niveau = 'debutant', objectif = 10) {
         questionsCorrectes: 0,
         objectifQuestions: objectif,
         etoilesSession: 0,
-        debutSession: new Date()
+        debutSession: new Date(),
+        debutQuestion: null,
+        tempsReponses: []
     };
     
     Difficulte.reinitialiserHistorique();
@@ -62,6 +66,7 @@ export function nouvelleQuestion() {
     );
     
     sessionEnCours.questionActuelle = question;
+    sessionEnCours.debutQuestion = new Date();
     return question;
 }
 
@@ -77,6 +82,15 @@ export function verifierReponse(reponseUtilisateur) {
     
     const { resultat, operande1, operande2 } = sessionEnCours.questionActuelle;
     const estCorrect = reponseUtilisateur === resultat;
+    
+    // Calculer le temps de réponse
+    const tempsReponse = sessionEnCours.debutQuestion 
+        ? (new Date() - sessionEnCours.debutQuestion) / 1000 
+        : 0;
+    sessionEnCours.tempsReponses.push({
+        temps: tempsReponse,
+        estCorrect
+    });
     
     // Mise à jour des compteurs
     sessionEnCours.questionsRepondues++;
@@ -100,6 +114,7 @@ export function verifierReponse(reponseUtilisateur) {
         message: estCorrect ? obtenirMessageSucces() : obtenirMessageErreur(),
         indice: estCorrect ? null : genererIndice(operande1, operande2),
         sessionTerminee,
+        tempsReponse,
         progression: {
             repondues: sessionEnCours.questionsRepondues,
             correctes: sessionEnCours.questionsCorrectes,
@@ -201,6 +216,15 @@ export function terminerSession() {
     const stats = Difficulte.obtenirStatistiquesSession();
     const duree = new Date() - sessionEnCours.debutSession;
     
+    // Calculer les statistiques de temps
+    const tempsCorrects = sessionEnCours.tempsReponses
+        .filter(r => r.estCorrect)
+        .map(r => r.temps);
+    
+    const tempsMoyen = tempsCorrects.length > 0
+        ? tempsCorrects.reduce((a, b) => a + b, 0) / tempsCorrects.length
+        : 0;
+    
     const resultats = {
         table: sessionEnCours.table,
         questionsRepondues: sessionEnCours.questionsRepondues,
@@ -208,6 +232,8 @@ export function terminerSession() {
         etoilesGagnees: sessionEnCours.etoilesSession,
         tauxReussite: stats.pourcentage,
         duree: Math.floor(duree / 1000), // en secondes
+        tempsMoyen: Math.round(tempsMoyen * 10) / 10, // arrondi à 1 décimale
+        tempsReponses: sessionEnCours.tempsReponses,
         badges: evaluerBadges()
     };
     
@@ -216,7 +242,8 @@ export function terminerSession() {
         Progression.mettreAJourStatsTable(
             sessionEnCours.table,
             sessionEnCours.questionsCorrectes,
-            sessionEnCours.questionsRepondues
+            sessionEnCours.questionsRepondues,
+            tempsMoyen
         );
     }
     
