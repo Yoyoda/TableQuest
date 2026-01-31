@@ -607,3 +607,123 @@ select {
         grid-template-columns: 1fr;
     }
 }
+
+/* ========== Pied de page ========== */
+.pied-de-page {
+    margin-top: var(--espacement-xl);
+    padding: var(--espacement-lg);
+    text-align: center;
+    color: var(--texte-secondaire);
+    font-size: 0.875rem;
+    border-top: 1px solid #e2e8f0;
+}
+
+.pied-de-page p {
+    margin: var(--espacement-xs) 0;
+}
+
+.pied-de-page a {
+    color: var(--couleur-primaire);
+    text-decoration: none;
+    transition: color var(--transition-rapide);
+}
+
+.pied-de-page a:hover {
+    color: var(--couleur-secondaire);
+    text-decoration: underline;
+}
+
+/* ========== Page Parents ========== */
+.entete-page {
+    margin-bottom: var(--espacement-xl);
+    padding: var(--espacement-md);
+}
+
+.page-parents {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--espacement-lg);
+}
+
+.page-parents h1 {
+    text-align: center;
+    margin-bottom: var(--espacement-xl);
+    color: var(--couleur-primaire);
+}
+
+.section-parents {
+    background: var(--fond-carte);
+    padding: var(--espacement-xl);
+    margin-bottom: var(--espacement-lg);
+    border-radius: var(--rayon-lg);
+    box-shadow: var(--ombre-md);
+}
+
+.section-parents h2 {
+    color: var(--couleur-primaire);
+    margin-bottom: var(--espacement-md);
+    font-size: 1.75rem;
+}
+
+.section-parents h3 {
+    color: var(--texte-principal);
+    margin-top: var(--espacement-lg);
+    margin-bottom: var(--espacement-sm);
+    font-size: 1.25rem;
+}
+
+.section-parents h4 {
+    color: var(--couleur-primaire);
+    margin-bottom: var(--espacement-sm);
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+.section-parents p {
+    margin-bottom: var(--espacement-md);
+    line-height: 1.8;
+    color: var(--texte-principal);
+}
+
+.section-highlight {
+    background: linear-gradient(135deg, #f0f9ff 0%, #fef3f2 100%);
+    border-left: 4px solid var(--couleur-primaire);
+}
+
+.liste-avantages {
+    list-style: none;
+    margin: var(--espacement-md) 0;
+}
+
+.liste-avantages li {
+    padding: var(--espacement-sm) 0;
+    line-height: 1.8;
+}
+
+.faq-item {
+    margin-bottom: var(--espacement-lg);
+    padding-bottom: var(--espacement-md);
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.faq-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.retour-jeu {
+    text-align: center;
+    margin-top: var(--espacement-xl);
+    margin-bottom: var(--espacement-lg);
+}
+
+.page-parents a {
+    color: var(--couleur-primaire);
+    text-decoration: none;
+    transition: color var(--transition-rapide);
+}
+
+.page-parents a:hover {
+    color: var(--couleur-secondaire);
+    text-decoration: underline;
+}
