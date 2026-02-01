@@ -17,14 +17,30 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <!-- Écran de sélection de profil -->
+    <div id="ecran-profils" class="ecran">
+        <div class="conteneur-centre">
+            <h1 class="titre-principal">🎮 TableQuest</h1>
+            <p class="sous-titre">Qui joue aujourd'hui ?</p>
+            
+            <div class="liste-profils" id="liste-profils">
+                <!-- Profils générés dynamiquement -->
+            </div>
+            
+            <button id="btn-nouveau-profil" class="btn-principal">
+                + Créer un nouveau profil
+            </button>
+        </div>
+    </div>
+
     <!-- Écran d'accueil -->
-    <div id="ecran-accueil" class="ecran actif">
+    <div id="ecran-accueil" class="ecran">
         <div class="conteneur-centre">
             <h1 class="titre-principal">🎮 TableQuest</h1>
             <p class="sous-titre">Deviens un maître des multiplications !</p>
             
             <div class="carte-profil">
-                <h2>Ton profil</h2>
+                <h2 id="titre-profil">Ton profil</h2>
                 <input type="text" id="nom-joueur" placeholder="Entre ton nom..." maxlength="20">
                 <div class="selection-avatar">
                     <button class="avatar" data-avatar="dragon">🐉</button>
@@ -32,7 +48,10 @@
                     <button class="avatar" data-avatar="robot">🤖</button>
                     <button class="avatar" data-avatar="chat">😺</button>
                 </div>
-                <button id="btn-commencer" class="btn-principal">Commencer l'aventure</button>
+                <div class="actions-profil">
+                    <button id="btn-commencer" class="btn-principal">Commencer l'aventure</button>
+                    <button id="btn-annuler-profil" class="btn-secondaire" style="display: none;">Annuler</button>
+                </div>
             </div>
         </div>
     </div>
@@ -48,6 +67,9 @@
                 <div class="score-total">
                     <span class="etoiles">⭐ <span id="total-etoiles">0</span></span>
                 </div>
+                <button id="btn-changer-profil" class="btn-retour" title="Changer de profil">
+                    👤
+                </button>
             </header>
 
             <!-- Toggle entre mode table et mode nombres -->

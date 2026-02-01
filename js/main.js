@@ -20,7 +20,8 @@ const App = {
         correct: 0,
         incorrect: 0
     },
-    enCoursDeValidation: false
+    enCoursDeValidation: false,
+    profilEnEdition: null // ID du profil en cours d'édition (null si création)
 };
 
 /**
@@ -45,15 +46,20 @@ function initialiser() {
             });
     }
     
-    // Charger la progression existante
-    const progression = Storage.chargerProgression();
+    // Migrer les anciennes données si nécessaire
+    Storage.migrerVersMultiProfils();
     
-    // Si un joueur existe, aller directement à l'écran de sélection
-    if (progression.joueur.nom) {
+    // Vérifier si un profil est déjà actif
+    const profilActif = Storage.obtenirProfilActif();
+    
+    if (profilActif) {
+        // Un profil est actif, aller directement à l'écran de sélection
+        const progression = Storage.chargerProgression();
         App.avatarSelectionne = progression.joueur.avatar;
         afficherEcranSelection();
     } else {
-        UI.afficherEcran('ecran-accueil');
+        // Pas de profil actif, afficher l'écran de sélection de profil
+        afficherEcranProfils();
     }
     
     // Initialiser les écouteurs d'événements
@@ -64,7 +70,15 @@ function initialiser() {
  * Configure tous les écouteurs d'événements
  */
 function initialiserEcouteurs() {
-    // === Écran d'accueil ===
+    // === Écran de sélection de profil ===
+    
+    const btnNouveauProfil = document.getElementById('btn-nouveau-profil');
+    btnNouveauProfil?.addEventListener('click', () => {
+        App.profilEnEdition = null; // Mode création
+        afficherEcranAccueil();
+    });
+    
+    // === Écran d'accueil (création/édition de profil) ===
     
     // Sélection d'avatar
     document.querySelectorAll('.avatar').forEach(btn => {
@@ -93,13 +107,49 @@ function initialiserEcouteurs() {
             return;
         }
         
-        // Sauvegarder le profil
-        Storage.mettreAJourProfil(nom, App.avatarSelectionne);
-        UI.jouerSon('success');
-        afficherEcranSelection();
+        if (App.profilEnEdition) {
+            // Mode édition
+            Storage.modifierProfil(App.profilEnEdition, {
+                nom: nom,
+                avatar: App.avatarSelectionne
+            });
+            UI.jouerSon('success');
+            afficherEcranSelection();
+        } else {
+            // Mode création
+            const profil = Storage.creerProfil(nom, App.avatarSelectionne);
+            Storage.definirProfilActif(profil.id);
+            UI.jouerSon('success');
+            afficherEcranSelection();
+        }
+        
+        App.profilEnEdition = null;
+    });
+    
+    // Bouton annuler (édition de profil)
+    const btnAnnulerProfil = document.getElementById('btn-annuler-profil');
+    btnAnnulerProfil?.addEventListener('click', () => {
+        if (App.profilEnEdition) {
+            // Si on était en édition, retourner à l'écran de sélection
+            afficherEcranSelection();
+        } else {
+            // Si on était en création, retourner à l'écran de profils
+            afficherEcranProfils();
+        }
+        App.profilEnEdition = null;
     });
     
     // === Écran de sélection ===
+    
+    // Bouton changer de profil (logout)
+    const btnChangerProfil = document.getElementById('btn-changer-profil');
+    btnChangerProfil?.addEventListener('click', () => {
+        if (confirm('Changer de profil ?')) {
+            Storage.deconnecterProfil();
+            afficherEcranProfils();
+            UI.jouerSon('click');
+        }
+    });
     
     // Basculer entre mode tables et mode nombres
     const btnModeTables = document.getElementById('btn-mode-tables');
@@ -223,6 +273,199 @@ function initialiserEcouteurs() {
     btnMenu?.addEventListener('click', () => {
         afficherEcranSelection();
     });
+}
+
+/**
+ * Affiche l'écran de sélection de profil
+ */
+function afficherEcranProfils() {
+    UI.afficherEcran('ecran-profils');
+    
+    const listeProfils = document.getElementById('liste-profils');
+    if (!listeProfils) return;
+    
+    const profils = Storage.listerProfils();
+    
+    if (profils.length === 0) {
+        listeProfils.innerHTML = `
+            <div class="message-vide">
+                <p>Aucun profil pour le moment.</p>
+                <p>Crée ton premier profil pour commencer !</p>
+            </div>
+        `;
+        return;
+    }
+    
+    // Trier les profils par dernière connexion (plus récent en premier)
+    profils.sort((a, b) => {
+        return new Date(b.derniereConnexion) - new Date(a.derniereConnexion);
+    });
+    
+    const emojis = { dragon: '🐉', licorne: '🦄', robot: '🤖', chat: '😺' };
+    
+    listeProfils.innerHTML = profils.map(profil => {
+        const avatar = emojis[profil.avatar] || '🐉';
+        const dateConnexion = new Date(profil.derniereConnexion);
+        const dateTexte = dateConnexion.toLocaleDateString('fr-FR', { 
+            day: 'numeric', 
+            month: 'long'
+        });
+        
+        return `
+            <div class="carte-profil-selection" data-profil-id="${profil.id}">
+                <div class="profil-info">
+                    <div class="profil-avatar">${avatar}</div>
+                    <div class="profil-details">
+                        <div class="profil-nom">${profil.nom}</div>
+                        <div class="profil-date">Dernière visite : ${dateTexte}</div>
+                    </div>
+                </div>
+                <div class="profil-actions">
+                    <button class="btn-profil-jouer" data-profil-id="${profil.id}" title="Jouer">
+                        ▶️
+                    </button>
+                    <button class="btn-profil-editer" data-profil-id="${profil.id}" title="Éditer">
+                        ✏️
+                    </button>
+                    <button class="btn-profil-supprimer" data-profil-id="${profil.id}" title="Supprimer">
+                        🗑️
+                    </button>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    // Ajouter les écouteurs pour chaque profil
+    listeProfils.querySelectorAll('.btn-profil-jouer').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const profilId = e.target.dataset.profilId;
+            chargerProfil(profilId);
+        });
+    });
+    
+    listeProfils.querySelectorAll('.btn-profil-editer').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const profilId = e.target.dataset.profilId;
+            editerProfil(profilId);
+        });
+    });
+    
+    listeProfils.querySelectorAll('.btn-profil-supprimer').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const profilId = e.target.dataset.profilId;
+            supprimerProfilConfirmation(profilId);
+        });
+    });
+    
+    // Permettre aussi de cliquer sur la carte pour jouer
+    listeProfils.querySelectorAll('.carte-profil-selection').forEach(carte => {
+        carte.addEventListener('click', (e) => {
+            // Ne pas déclencher si on a cliqué sur un bouton d'action
+            if (e.target.classList.contains('btn-profil-jouer') ||
+                e.target.classList.contains('btn-profil-editer') ||
+                e.target.classList.contains('btn-profil-supprimer')) {
+                return;
+            }
+            const profilId = carte.dataset.profilId;
+            chargerProfil(profilId);
+        });
+    });
+}
+
+/**
+ * Charge un profil et affiche l'écran de sélection
+ */
+function chargerProfil(profilId) {
+    Storage.definirProfilActif(profilId);
+    const progression = Storage.chargerProgression();
+    App.avatarSelectionne = progression.joueur.avatar;
+    UI.jouerSon('click');
+    afficherEcranSelection();
+}
+
+/**
+ * Édite un profil
+ */
+function editerProfil(profilId) {
+    const profils = Storage.listerProfils();
+    const profil = profils.find(p => p.id === profilId);
+    
+    if (!profil) return;
+    
+    App.profilEnEdition = profilId;
+    App.avatarSelectionne = profil.avatar;
+    
+    UI.jouerSon('click');
+    afficherEcranAccueil();
+    
+    // Pré-remplir le formulaire
+    const nomInput = document.getElementById('nom-joueur');
+    if (nomInput) nomInput.value = profil.nom;
+    
+    // Sélectionner l'avatar
+    document.querySelectorAll('.avatar').forEach(btn => {
+        btn.classList.remove('selectionne');
+        if (btn.dataset.avatar === profil.avatar) {
+            btn.classList.add('selectionne');
+        }
+    });
+    
+    // Changer le titre et afficher le bouton annuler
+    const titreProfil = document.getElementById('titre-profil');
+    if (titreProfil) titreProfil.textContent = 'Modifier le profil';
+    
+    const btnAnnuler = document.getElementById('btn-annuler-profil');
+    if (btnAnnuler) btnAnnuler.style.display = 'inline-block';
+    
+    const btnCommencer = document.getElementById('btn-commencer');
+    if (btnCommencer) btnCommencer.textContent = 'Enregistrer';
+}
+
+/**
+ * Supprime un profil après confirmation
+ */
+function supprimerProfilConfirmation(profilId) {
+    const profils = Storage.listerProfils();
+    const profil = profils.find(p => p.id === profilId);
+    
+    if (!profil) return;
+    
+    if (confirm(`Supprimer le profil de ${profil.nom} ?\nToutes les données seront perdues.`)) {
+        Storage.supprimerProfil(profilId);
+        UI.jouerSon('click');
+        afficherEcranProfils(); // Rafraîchir la liste
+    }
+}
+
+/**
+ * Affiche l'écran d'accueil (création/édition de profil)
+ */
+function afficherEcranAccueil() {
+    UI.afficherEcran('ecran-accueil');
+    
+    // Réinitialiser le formulaire si création
+    if (!App.profilEnEdition) {
+        const nomInput = document.getElementById('nom-joueur');
+        if (nomInput) nomInput.value = '';
+        
+        const titreProfil = document.getElementById('titre-profil');
+        if (titreProfil) titreProfil.textContent = 'Ton profil';
+        
+        const btnAnnuler = document.getElementById('btn-annuler-profil');
+        if (btnAnnuler) btnAnnuler.style.display = 'inline-block';
+        
+        const btnCommencer = document.getElementById('btn-commencer');
+        if (btnCommencer) btnCommencer.textContent = 'Commencer l\'aventure';
+        
+        // Sélectionner le premier avatar
+        document.querySelectorAll('.avatar').forEach((btn, index) => {
+            btn.classList.remove('selectionne');
+            if (index === 0) {
+                btn.classList.add('selectionne');
+                App.avatarSelectionne = btn.dataset.avatar;
+            }
+        });
+    }
 }
 
 /**
