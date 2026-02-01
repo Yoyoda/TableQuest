@@ -1139,15 +1139,29 @@ select {
     margin-top: var(--espacement-md);
 }
 
-/* Bouton de changement de profil */
+/* Bouton de changement de profil (logout) */
 #btn-changer-profil {
-    position: absolute;
-    right: var(--espacement-md);
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 1.5rem;
-    padding: var(--espacement-sm);
-    min-width: auto;
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    padding: var(--espacement-xs);
+    margin-left: var(--espacement-sm);
+    cursor: pointer;
+    opacity: 0.7;
+    transition: all var(--transition-rapide);
+    border-radius: var(--rayon-sm);
+}
+
+#btn-changer-profil:hover {
+    opacity: 1;
+    background: rgba(239, 68, 68, 0.1);
+    transform: scale(1.1);
+}
+
+.info-joueur {
+    display: flex;
+    align-items: center;
+    gap: var(--espacement-sm);
 }
 
 /* Responsive pour mobile */
@@ -1172,8 +1186,6 @@ select {
     }
     
     #btn-changer-profil {
-        position: static;
-        transform: none;
-        margin-top: var(--espacement-sm);
+        font-size: 1.5rem;
     }
 }
