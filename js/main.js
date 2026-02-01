@@ -114,29 +114,29 @@ function initialiserEcouteurs() {
                 avatar: App.avatarSelectionne
             });
             UI.jouerSon('success');
-            afficherEcranSelection();
+            App.profilEnEdition = null;
+            afficherEcranProfils(); // Retourner à la sélection de profils
         } else {
             // Mode création
             const profil = Storage.creerProfil(nom, App.avatarSelectionne);
             Storage.definirProfilActif(profil.id);
             UI.jouerSon('success');
-            afficherEcranSelection();
+            App.profilEnEdition = null;
+            afficherEcranSelection(); // Aller au jeu avec le nouveau profil
         }
-        
-        App.profilEnEdition = null;
     });
     
     // Bouton annuler (édition de profil)
     const btnAnnulerProfil = document.getElementById('btn-annuler-profil');
     btnAnnulerProfil?.addEventListener('click', () => {
-        if (App.profilEnEdition) {
-            // Si on était en édition, retourner à l'écran de sélection
+        App.profilEnEdition = null;
+        if (Storage.obtenirProfilActif()) {
+            // Si un profil est actif, retourner à l'écran de sélection
             afficherEcranSelection();
         } else {
-            // Si on était en création, retourner à l'écran de profils
+            // Sinon, retourner à l'écran de profils
             afficherEcranProfils();
         }
-        App.profilEnEdition = null;
     });
     
     // === Écran de sélection ===
