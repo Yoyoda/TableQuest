@@ -1016,3 +1016,176 @@ select {
         min-width: 100%;
     }
 }
+
+/* ========== Gestion des profils ========== */
+
+/* Liste des profils */
+.liste-profils {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espacement-md);
+    margin: var(--espacement-lg) 0;
+    max-width: 600px;
+    width: 100%;
+}
+
+.message-vide {
+    text-align: center;
+    padding: var(--espacement-xl);
+    background: var(--fond-carte);
+    border-radius: var(--rayon-md);
+    color: var(--texte-secondaire);
+}
+
+.message-vide p {
+    margin-bottom: var(--espacement-sm);
+}
+
+/* Carte de profil dans la liste */
+.carte-profil-selection {
+    background: var(--fond-carte);
+    border-radius: var(--rayon-md);
+    padding: var(--espacement-md);
+    box-shadow: var(--ombre-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: all var(--transition-normale);
+    border: 3px solid transparent;
+}
+
+.carte-profil-selection:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--ombre-lg);
+    border-color: var(--couleur-primaire);
+}
+
+.profil-info {
+    display: flex;
+    align-items: center;
+    gap: var(--espacement-md);
+    flex: 1;
+}
+
+.profil-avatar {
+    font-size: 3rem;
+    line-height: 1;
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: var(--rayon-md);
+    box-shadow: var(--ombre-sm);
+}
+
+.profil-details {
+    flex: 1;
+}
+
+.profil-nom {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--texte-principal);
+    margin-bottom: var(--espacement-xs);
+}
+
+.profil-date {
+    font-size: 0.9rem;
+    color: var(--texte-secondaire);
+}
+
+.profil-actions {
+    display: flex;
+    gap: var(--espacement-sm);
+    align-items: center;
+}
+
+.profil-actions button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: var(--espacement-xs);
+    border-radius: var(--rayon-sm);
+    transition: all var(--transition-rapide);
+    opacity: 0.7;
+}
+
+.profil-actions button:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.btn-profil-jouer:hover {
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.btn-profil-editer:hover {
+    background: rgba(99, 102, 241, 0.1);
+}
+
+.btn-profil-supprimer:hover {
+    background: rgba(239, 68, 68, 0.1);
+}
+
+/* Actions du profil dans l'écran d'accueil */
+.actions-profil {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espacement-sm);
+    margin-top: var(--espacement-md);
+}
+
+/* Bouton de changement de profil (logout) */
+#btn-changer-profil {
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    padding: var(--espacement-xs);
+    margin-left: var(--espacement-sm);
+    cursor: pointer;
+    opacity: 0.7;
+    transition: all var(--transition-rapide);
+    border-radius: var(--rayon-sm);
+}
+
+#btn-changer-profil:hover {
+    opacity: 1;
+    background: rgba(239, 68, 68, 0.1);
+    transform: scale(1.1);
+}
+
+.info-joueur {
+    display: flex;
+    align-items: center;
+    gap: var(--espacement-sm);
+}
+
+/* Responsive pour mobile */
+@media (max-width: 768px) {
+    .carte-profil-selection {
+        flex-direction: column;
+        gap: var(--espacement-md);
+    }
+    
+    .profil-info {
+        width: 100%;
+    }
+    
+    .profil-actions {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .profil-actions button {
+        font-size: 2rem;
+        padding: var(--espacement-sm);
+    }
+    
+    #btn-changer-profil {
+        font-size: 1.5rem;
+    }
+}
