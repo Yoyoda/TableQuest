@@ -81,7 +81,7 @@ export function definirProfilActif(profilId) {
  */
 export function creerProfil(nom, avatar = 'dragon') {
     const profils = listerProfils();
-    const id = 'profil_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    const id = 'profil_' + Date.now() + '_' + Math.random().toString(36).substring(2, 11);
     
     const nouveauProfil = {
         id,
