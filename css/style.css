@@ -477,13 +477,88 @@ button:disabled {
     box-shadow: var(--ombre-sm);
 }
 
+.parametres-titre {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 0 var(--espacement-md) 0;
+    cursor: pointer;
+    user-select: none;
+}
+
+.btn-toggle-parametres {
+    background: none;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: var(--espacement-sm);
+    transition: transform 0.3s ease;
+}
+
+.btn-toggle-parametres.ouvert {
+    transform: rotate(180deg);
+}
+
+.parametres-contenu {
+    max-height: 500px;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.parametres-contenu.ferme {
+    max-height: 0;
+}
+
+.parametre-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--espacement-sm);
+    margin: var(--espacement-md) 0;
+    padding: var(--espacement-sm);
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: var(--rayon-sm);
+}
+
 .toggle,
-.select-difficulte {
+.select-difficulte,
+.parametre-nombre {
     display: flex;
     align-items: center;
     gap: var(--espacement-sm);
-    margin: var(--espacement-sm) 0;
+    flex: 1;
     cursor: pointer;
+}
+
+.parametre-nombre input[type="number"] {
+    width: 100px;
+    padding: var(--espacement-sm);
+    font-size: 1rem;
+    border: 2px solid var(--fond-clair);
+    border-radius: var(--rayon-sm);
+    text-align: center;
+}
+
+.btn-reset {
+    background: var(--couleur-accent);
+    color: white;
+    border: none;
+    border-radius: var(--rayon-sm);
+    padding: var(--espacement-sm) var(--espacement-md);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 40px;
+    height: 40px;
+}
+
+.btn-reset:hover {
+    background: var(--couleur-accent-hover);
+    transform: scale(1.1);
+}
+
+.btn-reset:active {
+    transform: scale(0.95);
 }
 
 select {
