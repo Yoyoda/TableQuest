@@ -224,16 +224,80 @@ function initialiserEcouteurs() {
         }
     });
     
-    // Paramètres
+    // Paramètres - Toggle affichage
+    const btnToggleParametres = document.getElementById('btn-toggle-parametres');
+    const parametresContenu = document.getElementById('parametres-contenu');
+    const parametresTitre = document.getElementById('parametres-titre');
+    
+    // Par défaut, la section est fermée
+    parametresContenu?.classList.add('ferme');
+    
+    parametresTitre?.addEventListener('click', () => {
+        parametresContenu?.classList.toggle('ferme');
+        btnToggleParametres?.classList.toggle('ouvert');
+        UI.jouerSon('click');
+    });
+    
+    // Paramètres - Son
     const toggleSon = document.getElementById('toggle-son');
     toggleSon?.addEventListener('change', (e) => {
         UI.toggleSon(e.target.checked);
         Storage.mettreAJourParametres({ son: e.target.checked });
     });
     
+    // Paramètres - Difficulté
     const selectDifficulte = document.getElementById('select-difficulte');
     selectDifficulte?.addEventListener('change', (e) => {
         Storage.mettreAJourParametres({ difficulte: e.target.value });
+    });
+    
+    // Paramètres - Délai de validation
+    const inputDelaiValidation = document.getElementById('input-delai-validation');
+    inputDelaiValidation?.addEventListener('change', (e) => {
+        const valeur = parseInt(e.target.value);
+        if (valeur >= 0 && valeur <= 5000) {
+            Storage.mettreAJourParametres({ delaiValidation: valeur });
+        } else {
+            // Réinitialiser à la valeur actuelle si invalide
+            const progression = Storage.chargerProgression();
+            e.target.value = progression.parametres.delaiValidation;
+        }
+    });
+    
+    // Paramètres - Nombre de questions
+    const inputNombreQuestions = document.getElementById('input-nombre-questions');
+    inputNombreQuestions?.addEventListener('change', (e) => {
+        const valeur = parseInt(e.target.value);
+        if (valeur >= 1 && valeur <= 50) {
+            Storage.mettreAJourParametres({ nombreQuestions: valeur });
+        } else {
+            // Réinitialiser à la valeur actuelle si invalide
+            const progression = Storage.chargerProgression();
+            e.target.value = progression.parametres.nombreQuestions;
+        }
+    });
+    
+    // Paramètres - Boutons de réinitialisation
+    document.querySelectorAll('.btn-reset').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const param = e.target.dataset.param;
+            const valeurDefaut = Storage.reinitialiserParametre(param);
+            
+            // Mettre à jour l'interface
+            if (param === 'son') {
+                toggleSon.checked = valeurDefaut;
+                UI.toggleSon(valeurDefaut);
+            } else if (param === 'difficulte') {
+                selectDifficulte.value = valeurDefaut;
+            } else if (param === 'delaiValidation') {
+                inputDelaiValidation.value = valeurDefaut;
+            } else if (param === 'nombreQuestions') {
+                inputNombreQuestions.value = valeurDefaut;
+            }
+            
+            UI.jouerSon('success');
+            UI.animer(e.target, 'pulse');
+        });
     });
     
     // === Écran de jeu ===
@@ -509,6 +573,8 @@ function afficherEcranSelection() {
     const progression = Storage.chargerProgression();
     const toggleSon = document.getElementById('toggle-son');
     const selectDifficulte = document.getElementById('select-difficulte');
+    const inputDelaiValidation = document.getElementById('input-delai-validation');
+    const inputNombreQuestions = document.getElementById('input-nombre-questions');
     
     if (toggleSon) {
         toggleSon.checked = progression.parametres.son;
@@ -516,6 +582,12 @@ function afficherEcranSelection() {
     }
     if (selectDifficulte) {
         selectDifficulte.value = progression.parametres.difficulte;
+    }
+    if (inputDelaiValidation) {
+        inputDelaiValidation.value = progression.parametres.delaiValidation;
+    }
+    if (inputNombreQuestions) {
+        inputNombreQuestions.value = progression.parametres.nombreQuestions;
     }
 }
 
@@ -592,15 +664,16 @@ function demarrerJeu(table) {
     App.statsSession = { correct: 0, incorrect: 0 };
     App.enCoursDeValidation = false;
     
-    // Obtenir le niveau de difficulté
+    // Obtenir les paramètres
     const progression = Storage.chargerProgression();
     const niveau = progression.parametres.difficulte;
+    const nombreQuestions = progression.parametres.nombreQuestions;
     
     // Démarrer la session de jeu
-    Game.demarrerSession(table, niveau, 10, null);
+    Game.demarrerSession(table, niveau, nombreQuestions, null);
     
     // Réinitialiser l'affichage
-    UI.mettreAJourProgression(0, 10);
+    UI.mettreAJourProgression(0, nombreQuestions);
     UI.mettreAJourEtoiles(0);
     UI.mettreAJourStatistiques(App.statsSession);
     
@@ -620,15 +693,16 @@ function demarrerJeuNombres(nombres) {
     App.statsSession = { correct: 0, incorrect: 0 };
     App.enCoursDeValidation = false;
     
-    // Obtenir le niveau de difficulté
+    // Obtenir les paramètres
     const progression = Storage.chargerProgression();
     const niveau = progression.parametres.difficulte;
+    const nombreQuestions = progression.parametres.nombreQuestions;
     
     // Démarrer la session de jeu avec les nombres choisis
-    Game.demarrerSession(null, niveau, 10, nombres);
+    Game.demarrerSession(null, niveau, nombreQuestions, nombres);
     
     // Réinitialiser l'affichage
-    UI.mettreAJourProgression(0, 10);
+    UI.mettreAJourProgression(0, nombreQuestions);
     UI.mettreAJourEtoiles(0);
     UI.mettreAJourStatistiques(App.statsSession);
     
@@ -706,20 +780,24 @@ function validerReponse() {
     // Afficher le feedback
     UI.afficherFeedback(resultat.estCorrect, resultat.message, resultat.indice);
     
+    // Obtenir le délai de validation depuis les paramètres
+    const progression = Storage.chargerProgression();
+    const delaiValidation = progression.parametres.delaiValidation;
+    
     // Désactiver temporairement le bouton
     const btnValider = document.getElementById('btn-valider');
-    if (btnValider) UI.desactiverTemporairement(btnValider, 1500);
+    if (btnValider) UI.desactiverTemporairement(btnValider, delaiValidation);
     
     // Si session terminée, afficher les résultats
     if (resultat.sessionTerminee) {
         setTimeout(() => {
             afficherResultats();
-        }, 2000);
+        }, delaiValidation + 500); // Un peu plus long pour les résultats
     } else {
         // Sinon, nouvelle question après un délai
         setTimeout(() => {
             afficherNouvelleQuestion();
-        }, 1500);
+        }, delaiValidation);
     }
 }
 

@@ -118,20 +118,50 @@
             </div>
 
             <div class="parametres">
-                <h3>Paramètres</h3>
-                <label class="toggle">
-                    <input type="checkbox" id="toggle-son" checked>
-                    <span>🔊 Sons</span>
-                </label>
-                <label class="select-difficulte">
-                    <span>Difficulté :</span>
-                    <select id="select-difficulte">
-                        <option value="adaptatif">Adaptatif</option>
-                        <option value="debutant">Débutant</option>
-                        <option value="intermediaire">Intermédiaire</option>
-                        <option value="avance">Avancé</option>
-                    </select>
-                </label>
+                <h3 class="parametres-titre" id="parametres-titre">
+                    ⚙️ Paramètres
+                    <button class="btn-toggle-parametres" id="btn-toggle-parametres" aria-label="Afficher/Masquer les paramètres">
+                        ▼
+                    </button>
+                </h3>
+                <div class="parametres-contenu" id="parametres-contenu">
+                    <div class="parametre-item">
+                        <label class="toggle">
+                            <input type="checkbox" id="toggle-son" checked>
+                            <span>🔊 Sons</span>
+                        </label>
+                        <button class="btn-reset" data-param="son" title="Réinitialiser">↺</button>
+                    </div>
+                    
+                    <div class="parametre-item">
+                        <label class="select-difficulte">
+                            <span>Difficulté :</span>
+                            <select id="select-difficulte">
+                                <option value="adaptatif">Adaptatif</option>
+                                <option value="debutant">Débutant</option>
+                                <option value="intermediaire">Intermédiaire</option>
+                                <option value="avance">Avancé</option>
+                            </select>
+                        </label>
+                        <button class="btn-reset" data-param="difficulte" title="Réinitialiser">↺</button>
+                    </div>
+                    
+                    <div class="parametre-item">
+                        <label class="parametre-nombre">
+                            <span>⏱️ Délai de validation (ms) :</span>
+                            <input type="number" id="input-delai-validation" min="0" max="5000" step="100" value="1500">
+                        </label>
+                        <button class="btn-reset" data-param="delaiValidation" title="Réinitialiser">↺</button>
+                    </div>
+                    
+                    <div class="parametre-item">
+                        <label class="parametre-nombre">
+                            <span>🎯 Nombre de questions :</span>
+                            <input type="number" id="input-nombre-questions" min="1" max="50" value="10">
+                        </label>
+                        <button class="btn-reset" data-param="nombreQuestions" title="Réinitialiser">↺</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

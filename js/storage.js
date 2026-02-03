@@ -9,6 +9,16 @@ const CLE_PROFILS = 'tablequest_profils';
 const CLE_PROFIL_ACTIF = 'tablequest_profil_actif';
 
 /**
+ * Valeurs par défaut des paramètres
+ */
+export const PARAMETRES_PAR_DEFAUT = {
+    son: true,
+    difficulte: 'adaptatif',
+    delaiValidation: 1500, // Durée en ms avant passage à la question suivante après une bonne réponse
+    nombreQuestions: 10     // Nombre de questions par session
+};
+
+/**
  * Structure par défaut de la progression
  */
 const PROGRESSION_PAR_DEFAUT = {
@@ -19,8 +29,7 @@ const PROGRESSION_PAR_DEFAUT = {
     statistiques: {},
     badges: [],
     parametres: {
-        son: true,
-        difficulte: 'adaptatif'
+        ...PARAMETRES_PAR_DEFAUT
     },
     etoilesTotales: 0
 };
@@ -181,7 +190,15 @@ export function chargerProgressionProfil(profilId) {
         const data = localStorage.getItem(`${CLE_STORAGE}_${profilId}`);
         if (data) {
             const progression = JSON.parse(data);
-            return { ...PROGRESSION_PAR_DEFAUT, ...progression };
+            // Fusionner avec les valeurs par défaut pour assurer la compatibilité
+            return {
+                ...PROGRESSION_PAR_DEFAUT,
+                ...progression,
+                parametres: {
+                    ...PARAMETRES_PAR_DEFAUT,
+                    ...progression.parametres
+                }
+            };
         }
     } catch (error) {
         console.error('Erreur lors du chargement de la progression du profil:', error);
@@ -224,7 +241,14 @@ export function chargerProgression() {
         const data = localStorage.getItem(CLE_STORAGE);
         if (data) {
             const progression = JSON.parse(data);
-            return { ...PROGRESSION_PAR_DEFAUT, ...progression };
+            return {
+                ...PROGRESSION_PAR_DEFAUT,
+                ...progression,
+                parametres: {
+                    ...PARAMETRES_PAR_DEFAUT,
+                    ...progression.parametres
+                }
+            };
         }
     } catch (error) {
         console.error('Erreur lors du chargement de la progression:', error);
@@ -342,6 +366,20 @@ export function mettreAJourParametres(parametres) {
     progression.parametres = { ...progression.parametres, ...parametres };
     sauvegarderProgression(progression);
     return progression.parametres;
+}
+
+/**
+ * Réinitialise un paramètre à sa valeur par défaut
+ * @param {string} nomParametre - Nom du paramètre à réinitialiser
+ */
+export function reinitialiserParametre(nomParametre) {
+    const progression = chargerProgression();
+    if (PARAMETRES_PAR_DEFAUT.hasOwnProperty(nomParametre)) {
+        progression.parametres[nomParametre] = PARAMETRES_PAR_DEFAUT[nomParametre];
+        sauvegarderProgression(progression);
+        return progression.parametres[nomParametre];
+    }
+    return null;
 }
 
 /**
